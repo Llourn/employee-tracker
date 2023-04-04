@@ -11,19 +11,16 @@ const db = mysql.createConnection({
 });
 
 async function initializeDB() {
-  console.log("💢", path.join(__dirname, "../db/schema.sql"));
   try {
     const schemaSql = await fs
       .readFile(path.join(__dirname, "../db/schema.sql"))
       .then((response) => {
-        console.log("🧪", response.toString());
         return response.toString();
       });
 
     const seedSql = await fs
       .readFile(path.join(__dirname, "../db/seed.sql"))
       .then((response) => {
-        console.log("🧪", response.toString());
         return response.toString();
       })
       .catch((err) => {
@@ -36,4 +33,8 @@ async function initializeDB() {
   }
 }
 
-module.exports = { initializeDB, db };
+function getRoles() {}
+
+function getManagers() {}
+
+module.exports = { initializeDB, db, getRoles, getManagers };
