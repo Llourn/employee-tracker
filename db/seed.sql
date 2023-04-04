@@ -1,0 +1,45 @@
+INSERT INTO department (name) VALUES
+('Sales'),
+('Marketing'),
+('Engineering'),
+('Finance');
+
+INSERT INTO role (title, salary, department_id) VALUES
+('Sales Manager', 90000.00, 1),
+('Sales Representative', 50000.00, 1),
+('Marketing Manager', 80000.00, 2),
+('Marketing Coordinator', 45000.00, 2),
+('Software Engineer', 95000.00, 3),
+('Quality Assurance Engineer', 75000.00, 3),
+('Financial Analyst', 85000.00, 4),
+('Accountant', 60000.00, 4);
+
+INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES
+('John', 'Doe', 1, NULL),
+('Jane', 'Smith', 2, 1),
+('Bob', 'Johnson', 3, NULL),
+('Sara', 'Lee', 4, 3),
+('David', 'Kim', 5, 3),
+('Mike', 'Jones', 6, 5),
+('Emily', 'Nguyen', 7, 4),
+('Chris', 'Park', 8, 4),
+('Melissa', 'Rodriguez', 2, 1),
+('Michael', 'Lee', 5, 3),
+('Laura', 'Garcia', 6, 5),
+('Brandon', 'Clark', 5, 3),
+('Karen', 'Wang', 7, 4),
+('Jason', 'Nguyen', 8, 4),
+('Stephanie', 'Chen', 5, 3),
+('Justin', 'Davis', 6, 5),
+('Amanda', 'Kumar', 2, 1),
+('Ryan', 'Patel', 3, NULL),
+('Erica', 'Rivera', 4, 3),
+('Tyler', 'Gonzalez', 6, 5),
+('Jessica', 'Martinez', 7, 4),
+('Adam', 'Hernandez', 8, 4),
+('Brianna', 'Lopez', 2, 1),
+('Steven', 'Ramirez', 3, NULL),
+('Luis', 'Reyes', 4, 3),
+('Megan', 'Jones', 6, 5),
+('Derek', 'White', 7, 4),
+('Ashley', 'Davis', 8, 4);
