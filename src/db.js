@@ -1,14 +1,17 @@
-const mysql = require("mysql2");
+const mysql = require("mysql2/promise");
 const fs = require("fs").promises;
 const path = require("path");
 
-const db = mysql.createConnection({
-  host: "127.0.0.1",
-  user: "root",
-  password: "thisismypassword",
-  database: "employee_db",
-  multipleStatements: true,
-});
+const db = mysql.createConnection(
+  {
+    host: "127.0.0.1",
+    user: "root",
+    password: "thisismypassword",
+    database: "employee_db",
+    multipleStatements: true,
+  },
+  console.log("🔌 Connected to the employee_db database.")
+);
 
 async function initializeDB() {
   try {
@@ -33,8 +36,21 @@ async function initializeDB() {
   }
 }
 
-function getRoles() {}
+async function getRoles() {
+  let roles = [];
+  await db.query("SELECT * from department", (err, results) => {
+    if (err) {
+      console.error(err);
+    } else {
+      console.log("sdjlhkfgsdjkhfghsdk");
+      roles = results;
+    }
+  });
+  return roles;
+}
 
 function getManagers() {}
 
-module.exports = { initializeDB, db, getRoles, getManagers };
+function getDepartments() {}
+
+module.exports = { initializeDB, db, getRoles, getManagers, getDepartments };

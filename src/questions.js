@@ -1,16 +1,28 @@
-const { getRoles, getManagers } = require("./db");
+const { getRoles, getManagers, getDepartments } = require("./db");
 
-const firstQuestion = {
+const startingOptions = {
+  viewDeps: "view all departments",
+  viewRoles: "view all roles",
+  viewEmps: "view all employees",
+  addDep: "add a department",
+  addRole: "add a role",
+  addEmp: "add an employee",
+  updateEmp: "update an employee role",
+  exit: "🚪 Exit",
+};
+
+const startingQuestion = {
   type: "list",
-  name: "firstQuestion",
+  name: "startingQuestion",
   choices: [
-    "view all departments",
-    "view all roles",
-    "view all employees",
-    "add a department",
-    "add a role",
-    "add an employee",
-    "update an employee role",
+    startingOptions.viewDeps,
+    startingOptions.viewRoles,
+    startingOptions.viewEmps,
+    startingOptions.addDep,
+    startingOptions.addRole,
+    startingOptions.addEmp,
+    startingOptions.updateEmp,
+    startingOptions.exit,
   ],
 };
 
@@ -32,9 +44,10 @@ const roleInfo = [
     massage: "What's the salary?",
   },
   {
-    type: "input",
+    type: "list",
     name: "roleDepartment",
     message: "Which department does this role belong to?",
+    choices: getDepartments(),
   },
 ];
 
@@ -62,3 +75,11 @@ const employeeInfo = [
     choices: getManagers(),
   },
 ];
+
+module.exports = {
+  startingQuestion,
+  departmentInfo,
+  roleInfo,
+  employeeInfo,
+  startingOptions,
+};
