@@ -1,4 +1,4 @@
-const { getRoles, getManagers, getDepartments } = require("./db");
+const { db, getRoles, getManagers, getDepartments } = require("./db");
 
 const startingOptions = {
   viewDeps: "view all departments",
@@ -14,6 +14,7 @@ const startingOptions = {
 const startingQuestion = {
   type: "list",
   name: "startingQuestion",
+  message: "What would you like to do?",
   choices: [
     startingOptions.viewDeps,
     startingOptions.viewRoles,
@@ -47,7 +48,7 @@ const roleInfo = [
     type: "list",
     name: "roleDepartment",
     message: "Which department does this role belong to?",
-    choices: getDepartments(),
+    choices: getDepartments,
   },
 ];
 

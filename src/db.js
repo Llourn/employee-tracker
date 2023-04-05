@@ -1,4 +1,4 @@
-const mysql = require("mysql2/promise");
+const mysql = require("mysql2");
 const fs = require("fs").promises;
 const path = require("path");
 
@@ -36,13 +36,12 @@ async function initializeDB() {
   }
 }
 
-async function getRoles() {
+function getRoles() {
   let roles = [];
-  await db.query("SELECT * from department", (err, results) => {
+  db.query("SELECT * from department", (err, results) => {
     if (err) {
       console.error(err);
     } else {
-      console.log("sdjlhkfgsdjkhfghsdk");
       roles = results;
     }
   });
@@ -51,6 +50,16 @@ async function getRoles() {
 
 function getManagers() {}
 
-function getDepartments() {}
+const getDepartments = new Promise((resolve, reject) => {
+  db.query("SELECT * from department", (err, results) => {
+    if (err) {
+      console.error(err);
+      reject("issue getting departments");
+    } else {
+      console.log(results);
+      resolve(results.toString());
+    }
+  });
+});
 
 module.exports = { initializeDB, db, getRoles, getManagers, getDepartments };

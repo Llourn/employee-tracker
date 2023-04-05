@@ -16,11 +16,10 @@ function prompt() {
     .prompt(startingQuestion)
     .then((answers) => {
       if (answers.startingQuestion == startingOptions.exit) {
+        console.log("Exiting application...");
         process.exit();
       } else {
-        if (answers.startingQuestion === startingOptions.viewRoles) {
-          // call getroles() here and print them to the screen.
-        }
+        handleFirstAnswer(answers.startingQuestion);
         // prompt();
       }
     })
@@ -34,3 +33,84 @@ function prompt() {
 }
 
 prompt();
+
+function handleFirstAnswer(answer) {
+  if (answer === startingOptions.viewRoles) {
+    db.query("SELECT * from role", (err, results) => {
+      if (err) {
+        console.error(err);
+      } else {
+        printTable(results);
+      }
+    });
+  }
+  if (answer === startingOptions.viewDeps) {
+    db.query("SELECT * from department", (err, results) => {
+      if (err) {
+        console.error(err);
+      } else {
+        printTable(results);
+      }
+    });
+  }
+  if (answer === startingOptions.viewEmps) {
+    db.query("SELECT * from employee", (err, results) => {
+      if (err) {
+        console.error(err);
+      } else {
+        printTable(results);
+      }
+    });
+  }
+  if (answer === startingOptions.addDep) {
+    inquirer.prompt(departmentInfo).then((answers) => {
+      db.query(
+        `INSERT INTO department (name) VALUES ('${answers.departmentName}')`,
+        (err, results) => {
+          if (err) {
+            console.error(err);
+          } else {
+            console.log(
+              `Successfully added '${answers.departmentName}' to departments table.\n`
+            );
+            prompt();
+          }
+        }
+      );
+    });
+  }
+  if (answer === startingOptions.addRole) {
+    inquirer.prompt(roleInfo).then((answers) => {
+      db.query(
+        `INSERT INTO role (title, salary, department_id) VALUES ('${answers.roleTitle}', ${answers.roleSalary}, ${answers.roleDepartment}),`,
+        (err, results) => {
+          if (err) {
+            console.error(err);
+          } else {
+            console.log(
+              `Successfully added '${answers.roleTitle}' to departments table.\n`
+            );
+            prompt();
+          }
+        }
+      );
+    });
+  }
+  if (answer === startingOptions.addEmp) {
+    inquirer.prompt(departmentInfo).then((answers) => {
+      db.query(
+        `INSERT INTO department (name) VALUES ('${answers.departmentName}')`,
+        (err, results) => {
+          if (err) {
+            console.error(err);
+          } else {
+            console.log(
+              `Successfully added '${answers.departmentName}' to departments table.\n`
+            );
+            prompt();
+          }
+        }
+      );
+    });
+  }
+}
