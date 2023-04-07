@@ -7,6 +7,7 @@ const {
   departmentInfo,
   roleInfo,
   employeeInfo,
+  updateEmployeeInfo,
 } = require("./questions");
 const inquirer = require("inquirer");
 
@@ -96,6 +97,19 @@ const handleFirstAnswer = async (answer, db) => {
       console.log(
         `✅ Employee '${answers.employeeFirstName} ${answers.employeeLastName}' added successfully`
       );
+    }
+  }
+  if (answer === startingOptions.updateEmp) {
+    console.log("Updating emp");
+    const answers = await inquirer.prompt(await updateEmployeeInfo(db));
+    const [results] = await db
+      .promise()
+      .query(
+        `UPDATE employee SET role_id = ${answers.employeeRole}  WHERE id = ${answers.employee}`
+      );
+    console.log(answers.employee);
+    if (results.affectedRows > 0) {
+      console.log(`✅ Employee updated successfully`);
     }
   }
 };

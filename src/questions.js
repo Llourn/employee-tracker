@@ -65,9 +65,11 @@ const employeeInfo = async (db) => {
     return { name: `${row.first_name} ${row.last_name}`, value: row.id };
   });
 
-  const convertedRoleRows = roleRows.map((row) => {
+  let convertedRoleRows = roleRows.map((row) => {
     return { name: row.title, value: row.id };
   });
+
+  convertedEmpRows.push({ name: "NONE", value: null });
 
   return [
     {
@@ -95,10 +97,39 @@ const employeeInfo = async (db) => {
   ];
 };
 
+const updateEmployeeInfo = async (db) => {
+  const [empRows] = await db.promise().query("SELECT * FROM employee");
+  const [roleRows] = await db.promise().query("SELECT * FROM role");
+
+  const convertedEmpRows = empRows.map((row) => {
+    return { name: `${row.first_name} ${row.last_name}`, value: row.id };
+  });
+
+  const convertedRoleRows = roleRows.map((row) => {
+    return { name: row.title, value: row.id };
+  });
+
+  return [
+    {
+      type: "list",
+      name: "employee",
+      message: "Employee?",
+      choices: convertedEmpRows,
+    },
+    {
+      type: "list",
+      name: "employeeRole",
+      message: "Role?",
+      choices: convertedRoleRows,
+    },
+  ];
+};
+
 module.exports = {
   startingQuestion,
   departmentInfo,
   roleInfo,
   employeeInfo,
+  updateEmployeeInfo,
   startingOptions,
 };
