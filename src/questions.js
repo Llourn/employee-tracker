@@ -1,4 +1,4 @@
-const startingOptions = {
+const mainMenuOptions = {
   viewDeps: "view all departments",
   viewRoles: "view all roles",
   viewEmps: "view all employees",
@@ -9,29 +9,29 @@ const startingOptions = {
   exit: "🚪 Exit",
 };
 
-const startingQuestion = {
+const mainMenu = {
   type: "list",
-  name: "startingQuestion",
+  name: "mainMenu",
   message: "What would you like to do?",
   choices: [
-    startingOptions.viewDeps,
-    startingOptions.viewRoles,
-    startingOptions.viewEmps,
-    startingOptions.addDep,
-    startingOptions.addRole,
-    startingOptions.addEmp,
-    startingOptions.updateEmp,
-    startingOptions.exit,
+    mainMenuOptions.viewDeps,
+    mainMenuOptions.viewRoles,
+    mainMenuOptions.viewEmps,
+    mainMenuOptions.addDep,
+    mainMenuOptions.addRole,
+    mainMenuOptions.addEmp,
+    mainMenuOptions.updateEmp,
+    mainMenuOptions.exit,
   ],
 };
 
-const departmentInfo = {
+const addDepartment = {
   type: "input",
   name: "departmentName",
   message: "What's the name of the dept you'd like to add?",
 };
 
-const roleInfo = async (db) => {
+const addRole = async (db) => {
   const [rows] = await db.promise().query("SELECT * FROM department");
   const convertedRows = rows.map((row) => {
     return { name: row.name, value: row.id };
@@ -57,7 +57,7 @@ const roleInfo = async (db) => {
   ];
 };
 
-const employeeInfo = async (db) => {
+const addEmployee = async (db) => {
   const [empRows] = await db.promise().query("SELECT * FROM employee");
   const [roleRows] = await db.promise().query("SELECT * FROM role");
 
@@ -97,7 +97,7 @@ const employeeInfo = async (db) => {
   ];
 };
 
-const updateEmployeeInfo = async (db) => {
+const updateEmployee = async (db) => {
   const [empRows] = await db.promise().query("SELECT * FROM employee");
   const [roleRows] = await db.promise().query("SELECT * FROM role");
 
@@ -126,10 +126,10 @@ const updateEmployeeInfo = async (db) => {
 };
 
 module.exports = {
-  startingQuestion,
-  departmentInfo,
-  roleInfo,
-  employeeInfo,
-  updateEmployeeInfo,
-  startingOptions,
+  mainMenu,
+  addDepartment,
+  addRole,
+  addEmployee,
+  updateEmployee,
+  mainMenuOptions,
 };

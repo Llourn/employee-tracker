@@ -3,11 +3,11 @@ const fs = require("fs").promises;
 const path = require("path");
 const { printTable } = require("console-table-printer");
 const {
-  startingOptions,
-  departmentInfo,
-  roleInfo,
-  employeeInfo,
-  updateEmployeeInfo,
+  mainMenuOptions,
+  addDepartment,
+  addRole,
+  addEmployee,
+  updateEmployee,
 } = require("./questions");
 const inquirer = require("inquirer");
 
@@ -47,7 +47,7 @@ async function initializeDB(db) {
 }
 
 const handleFirstAnswer = async (answer, db) => {
-  if (answer === startingOptions.viewRoles) {
+  if (answer === mainMenuOptions.viewRoles) {
     const [rows] = await db
       .promise()
       .query(
@@ -55,11 +55,11 @@ const handleFirstAnswer = async (answer, db) => {
       );
     printTable(rows);
   }
-  if (answer === startingOptions.viewDeps) {
+  if (answer === mainMenuOptions.viewDeps) {
     const [rows] = await db.promise().query("SELECT * FROM department");
     printTable(rows);
   }
-  if (answer === startingOptions.viewEmps) {
+  if (answer === mainMenuOptions.viewEmps) {
     const [rows] = await db
       .promise()
       .query(
@@ -67,8 +67,8 @@ const handleFirstAnswer = async (answer, db) => {
       );
     printTable(rows);
   }
-  if (answer === startingOptions.addDep) {
-    const answers = await inquirer.prompt(departmentInfo);
+  if (answer === mainMenuOptions.addDep) {
+    const answers = await inquirer.prompt(addDepartment);
     const [results] = await db
       .promise()
       .query(
@@ -80,9 +80,9 @@ const handleFirstAnswer = async (answer, db) => {
       );
     }
   }
-  if (answer === startingOptions.addRole) {
+  if (answer === mainMenuOptions.addRole) {
     console.log("adding a role");
-    const answers = await inquirer.prompt(await roleInfo(db));
+    const answers = await inquirer.prompt(await addRole(db));
     console.log("answers", answers);
     const [results] = await db
       .promise()
@@ -93,9 +93,9 @@ const handleFirstAnswer = async (answer, db) => {
       console.log(`✅ Role '${answers.roleTitle}' added successfully`);
     }
   }
-  if (answer === startingOptions.addEmp) {
+  if (answer === mainMenuOptions.addEmp) {
     console.log("adding an employee");
-    const answers = await inquirer.prompt(await employeeInfo(db));
+    const answers = await inquirer.prompt(await addEmployee(db));
     const [results] = await db
       .promise()
       .query(
@@ -107,9 +107,9 @@ const handleFirstAnswer = async (answer, db) => {
       );
     }
   }
-  if (answer === startingOptions.updateEmp) {
+  if (answer === mainMenuOptions.updateEmp) {
     console.log("Updating emp");
-    const answers = await inquirer.prompt(await updateEmployeeInfo(db));
+    const answers = await inquirer.prompt(await updateEmployee(db));
     const [results] = await db
       .promise()
       .query(

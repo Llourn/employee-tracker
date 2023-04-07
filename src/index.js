@@ -1,5 +1,5 @@
 const inquirer = require("inquirer");
-const { startingOptions, startingQuestion } = require("./questions");
+const { mainMenuOptions, mainMenu } = require("./questions");
 const { createConnection, initializeDB, handleFirstAnswer } = require("./db");
 
 const start = async () => {
@@ -8,12 +8,12 @@ const start = async () => {
 
   const prompt = async () => {
     console.log("");
-    const answers = await inquirer.prompt(startingQuestion);
-    if (answers.startingQuestion == startingOptions.exit) {
+    const answers = await inquirer.prompt(mainMenu);
+    if (answers.mainMenu == mainMenuOptions.exit) {
       console.log("Exiting application...");
       process.exit();
     } else {
-      await handleFirstAnswer(answers.startingQuestion, db);
+      await handleFirstAnswer(answers.mainMenu, db);
       prompt();
     }
   };
