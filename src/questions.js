@@ -1,5 +1,3 @@
-const { db, getRoles, getManagers, getDepartments } = require("./db");
-
 const startingOptions = {
   viewDeps: "view all departments",
   viewRoles: "view all roles",
@@ -33,24 +31,31 @@ const departmentInfo = {
   message: "What's the name of the dept you'd like to add?",
 };
 
-const roleInfo = [
-  {
-    type: "input",
-    name: "roleTitle",
-    message: "What's the name of the role you'd like to add?",
-  },
-  {
-    type: "input",
-    name: "roleSalary",
-    massage: "What's the salary?",
-  },
-  {
-    type: "list",
-    name: "roleDepartment",
-    message: "Which department does this role belong to?",
-    choices: getDepartments,
-  },
-];
+const roleInfo = async (db) => {
+  const [rows] = await db.promise().query("SELECT * FROM department");
+  const convertedRows = rows.map((row) => {
+    return { name: row.name, value: row.id };
+  });
+  console.log("departments:", rows);
+  return [
+    {
+      type: "input",
+      name: "roleTitle",
+      message: "What's the name of the role you'd like to add?",
+    },
+    {
+      type: "input",
+      name: "roleSalary",
+      massage: "What's the salary?",
+    },
+    {
+      type: "list",
+      name: "roleDepartment",
+      message: "Which department does this role belong to?",
+      choices: convertedRows,
+    },
+  ];
+};
 
 const employeeInfo = [
   {
@@ -67,13 +72,13 @@ const employeeInfo = [
     input: "list",
     name: "employeeRole",
     message: "Role?",
-    choices: getRoles(),
+    choices: [],
   },
   {
     input: "list",
     name: "employeeManager",
     message: "Manager?",
-    choices: getManagers(),
+    choices: [],
   },
 ];
 
