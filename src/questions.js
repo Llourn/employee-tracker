@@ -36,7 +36,7 @@ const roleInfo = async (db) => {
   const convertedRows = rows.map((row) => {
     return { name: row.name, value: row.id };
   });
-  console.log("departments:", rows);
+
   return [
     {
       type: "input",

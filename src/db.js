@@ -48,7 +48,11 @@ async function initializeDB(db) {
 
 const handleFirstAnswer = async (answer, db) => {
   if (answer === startingOptions.viewRoles) {
-    const [rows] = await db.promise().query("SELECT * FROM role");
+    const [rows] = await db
+      .promise()
+      .query(
+        "SELECT role.id, title, department.name as department, salary FROM role JOIN department ON department.id = role.department_id"
+      );
     printTable(rows);
   }
   if (answer === startingOptions.viewDeps) {
@@ -56,7 +60,11 @@ const handleFirstAnswer = async (answer, db) => {
     printTable(rows);
   }
   if (answer === startingOptions.viewEmps) {
-    const [rows] = await db.promise().query("SELECT * FROM employee");
+    const [rows] = await db
+      .promise()
+      .query(
+        "SELECT e.id, e.first_name, e.last_name, role.title, department.name, role.salary, CONCAT(m.first_name, ' ', m.last_name) as manager FROM employee e LEFT JOIN employee m ON e.manager_id = m.id JOIN role on role.id = e.role_id JOIN department on department.id = role.department_id;"
+      );
     printTable(rows);
   }
   if (answer === startingOptions.addDep) {
