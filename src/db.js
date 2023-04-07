@@ -2,7 +2,12 @@ const mysql = require("mysql2");
 const fs = require("fs").promises;
 const path = require("path");
 const { printTable } = require("console-table-printer");
-const { startingOptions, departmentInfo, roleInfo } = require("./questions");
+const {
+  startingOptions,
+  departmentInfo,
+  roleInfo,
+  employeeInfo,
+} = require("./questions");
 const inquirer = require("inquirer");
 
 const createConnection = async () =>
@@ -13,7 +18,6 @@ const createConnection = async () =>
       password: "thisismypassword",
       database: "employee_db",
       multipleStatements: true,
-      // debug: true,
     },
     console.log("🔌 Connected to the employee_db database.")
   );
@@ -41,31 +45,6 @@ async function initializeDB(db) {
   }
 }
 
-function getRoles() {
-  let roles = [];
-  db.query("SELECT * from department", (err, results) => {
-    if (err) {
-      console.error(err);
-    } else {
-      roles = results;
-    }
-  });
-  return roles;
-}
-
-function getManagers() {}
-
-// const getDepartments = new Promise((resolve, reject) => {
-//   db.query("SELECT * from department", (err, results) => {
-//     if (err) {
-//       console.error(err);
-//       reject("issue getting departments");
-//     } else {
-//       console.log(results);
-//       resolve(results.toString());
-//     }
-//   });
-// });
 const handleFirstAnswer = async (answer, db) => {
   if (answer === startingOptions.viewRoles) {
     const [rows] = await db.promise().query("SELECT * FROM role");
@@ -104,45 +83,25 @@ const handleFirstAnswer = async (answer, db) => {
     if (results.affectedRows > 0) {
       console.log(`✅ Role '${answers.roleTitle}' added successfully`);
     }
-
-    // inquirer.prompt(roleInfo).then((answers) => {
-    //   db.query(
-    //     `INSERT INTO role (title, salary, department_id) VALUES ('${answers.roleTitle}', ${answers.roleSalary}, ${answers.roleDepartment}),`,
-    //     (err, results) => {
-    //       if (err) {
-    //         console.error(err);
-    //       } else {
-    //         console.log(
-    //           `Successfully added '${answers.roleTitle}' to departments table.\n`
-    //         );
-    //       }
-    //     }
-    //   );
-    // });
   }
   if (answer === startingOptions.addEmp) {
-    inquirer.prompt(departmentInfo).then((answers) => {
-      db.query(
-        `INSERT INTO department (name) VALUES ('${answers.departmentName}')`,
-        (err, results) => {
-          if (err) {
-            console.error(err);
-          } else {
-            console.log(
-              `Successfully added '${answers.departmentName}' to departments table.\n`
-            );
-          }
-        }
+    console.log("adding an employee");
+    const answers = await inquirer.prompt(await employeeInfo(db));
+    const [results] = await db
+      .promise()
+      .query(
+        `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('${answers.employeeFirstName}', '${answers.employeeLastName}', ${answers.employeeRole}, ${answers.employeeManager})`
       );
-    });
+    if (results.affectedRows > 0) {
+      console.log(
+        `✅ Employee '${answers.employeeFirstName} ${answers.employeeLastName}' added successfully`
+      );
+    }
   }
 };
 
 module.exports = {
   initializeDB,
   createConnection,
-  getRoles,
-  getManagers,
-  // getDepartments,
   handleFirstAnswer,
 };
