@@ -1,11 +1,11 @@
 const mainMenuOptions = {
-  viewDeps: "view all departments",
-  viewRoles: "view all roles",
-  viewEmps: "view all employees",
-  addDep: "add a department",
-  addRole: "add a role",
-  addEmp: "add an employee",
-  updateEmp: "update an employee role",
+  viewEmps: "View All Employees",
+  addEmp: "Add Employee",
+  updateEmp: "Update Employee role",
+  viewRoles: "View All Roles",
+  addRole: "Add Role",
+  viewDeps: "View All Departments",
+  addDep: "Add Department",
   exit: "🚪 Exit",
 };
 
@@ -14,13 +14,13 @@ const mainMenu = {
   name: "mainMenu",
   message: "What would you like to do?",
   choices: [
-    mainMenuOptions.viewDeps,
-    mainMenuOptions.viewRoles,
     mainMenuOptions.viewEmps,
-    mainMenuOptions.addDep,
-    mainMenuOptions.addRole,
     mainMenuOptions.addEmp,
     mainMenuOptions.updateEmp,
+    mainMenuOptions.viewRoles,
+    mainMenuOptions.addRole,
+    mainMenuOptions.viewDeps,
+    mainMenuOptions.addDep,
     mainMenuOptions.exit,
   ],
 };
@@ -33,7 +33,7 @@ const addDepartment = {
 
 const addRole = async (db) => {
   const [rows] = await db.promise().query("SELECT * FROM department");
-  const convertedRows = rows.map((row) => {
+  const departments = rows.map((row) => {
     return { name: row.name, value: row.id };
   });
 
@@ -52,7 +52,7 @@ const addRole = async (db) => {
       type: "list",
       name: "roleDepartment",
       message: "Which department does this role belong to?",
-      choices: convertedRows,
+      choices: departments,
     },
   ];
 };
@@ -61,15 +61,15 @@ const addEmployee = async (db) => {
   const [empRows] = await db.promise().query("SELECT * FROM employee");
   const [roleRows] = await db.promise().query("SELECT * FROM role");
 
-  const convertedEmpRows = empRows.map((row) => {
+  const employees = empRows.map((row) => {
     return { name: `${row.first_name} ${row.last_name}`, value: row.id };
   });
 
-  let convertedRoleRows = roleRows.map((row) => {
+  let roles = roleRows.map((row) => {
     return { name: row.title, value: row.id };
   });
 
-  convertedEmpRows.push({ name: "NONE", value: null });
+  employees.push({ name: "NONE", value: null });
 
   return [
     {
@@ -86,13 +86,13 @@ const addEmployee = async (db) => {
       type: "list",
       name: "employeeRole",
       message: "Role?",
-      choices: convertedRoleRows,
+      choices: roles,
     },
     {
       type: "list",
       name: "employeeManager",
       message: "Manager?",
-      choices: convertedEmpRows,
+      choices: employees,
     },
   ];
 };

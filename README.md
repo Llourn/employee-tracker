@@ -2,7 +2,7 @@
 
 ## Description
 
-TODO
+A CLI app used to keep track of Employees, Roles, and Departments. Review and modify data stored on a database.
 
 ## Table of Contents
 
@@ -13,15 +13,26 @@ TODO
 
 ## Installation
 
-TODO
+Requirements:
+
+- Node v18.x
+- MySQL Server
+
+Instructions:
+
+- clone this repo.
+- cd into project directory
+- npm install
+- update MySQL database connection configuration in `db.js`.
+- `npm run start`
+
+Note: On start, the `initializeDB()` function will create the table and seed it with data. If this isn't disired just comment out the function call in `index.js`
 
 ## Usage
 
-TODO
+Use the keyboard to navigate the UI and to enter text input when prompted.
 
-## Credits
-
-TODO
+To exit select `🚪 Exit` from the main menu.
 
 ## License
 

@@ -46,7 +46,7 @@ async function initializeDB(db) {
   }
 }
 
-const handleFirstAnswer = async (answer, db) => {
+const mainMenuHandler = async (answer, db) => {
   if (answer === mainMenuOptions.viewRoles) {
     const [rows] = await db
       .promise()
@@ -55,10 +55,12 @@ const handleFirstAnswer = async (answer, db) => {
       );
     printTable(rows);
   }
+
   if (answer === mainMenuOptions.viewDeps) {
     const [rows] = await db.promise().query("SELECT * FROM department");
     printTable(rows);
   }
+
   if (answer === mainMenuOptions.viewEmps) {
     const [rows] = await db
       .promise()
@@ -67,8 +69,10 @@ const handleFirstAnswer = async (answer, db) => {
       );
     printTable(rows);
   }
+
   if (answer === mainMenuOptions.addDep) {
     const answers = await inquirer.prompt(addDepartment);
+
     const [results] = await db
       .promise()
       .query(
@@ -80,10 +84,10 @@ const handleFirstAnswer = async (answer, db) => {
       );
     }
   }
+
   if (answer === mainMenuOptions.addRole) {
-    console.log("adding a role");
     const answers = await inquirer.prompt(await addRole(db));
-    console.log("answers", answers);
+
     const [results] = await db
       .promise()
       .query(
@@ -93,9 +97,10 @@ const handleFirstAnswer = async (answer, db) => {
       console.log(`✅ Role '${answers.roleTitle}' added successfully`);
     }
   }
+
   if (answer === mainMenuOptions.addEmp) {
-    console.log("adding an employee");
     const answers = await inquirer.prompt(await addEmployee(db));
+
     const [results] = await db
       .promise()
       .query(
@@ -107,15 +112,15 @@ const handleFirstAnswer = async (answer, db) => {
       );
     }
   }
+
   if (answer === mainMenuOptions.updateEmp) {
-    console.log("Updating emp");
     const answers = await inquirer.prompt(await updateEmployee(db));
+
     const [results] = await db
       .promise()
       .query(
         `UPDATE employee SET role_id = ${answers.employeeRole}  WHERE id = ${answers.employee}`
       );
-    console.log(answers.employee);
     if (results.affectedRows > 0) {
       console.log(`✅ Employee updated successfully`);
     }
@@ -125,5 +130,5 @@ const handleFirstAnswer = async (answer, db) => {
 module.exports = {
   initializeDB,
   createConnection,
-  handleFirstAnswer,
+  mainMenuHandler,
 };

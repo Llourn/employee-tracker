@@ -1,6 +1,6 @@
 const inquirer = require("inquirer");
 const { mainMenuOptions, mainMenu } = require("./questions");
-const { createConnection, initializeDB, handleFirstAnswer } = require("./db");
+const { createConnection, initializeDB, mainMenuHandler } = require("./db");
 
 const start = async () => {
   const db = await createConnection();
@@ -13,7 +13,7 @@ const start = async () => {
       console.log("Exiting application...");
       process.exit();
     } else {
-      await handleFirstAnswer(answers.mainMenu, db);
+      await mainMenuHandler(answers.mainMenu, db);
       prompt();
     }
   };
