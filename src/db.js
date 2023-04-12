@@ -1,7 +1,8 @@
 const mysql = require("mysql2");
 const fs = require("fs").promises;
 const path = require("path");
-const { printTable } = require("console-table-printer");
+const cTable = require("console.table");
+
 const {
   mainMenuOptions,
   addDepartment,
@@ -53,12 +54,12 @@ const mainMenuHandler = async (answer, db) => {
       .query(
         "SELECT role.id, title, department.name as department, salary FROM role JOIN department ON department.id = role.department_id"
       );
-    printTable(rows);
+    console.table(rows);
   }
 
   if (answer === mainMenuOptions.viewDeps) {
     const [rows] = await db.promise().query("SELECT * FROM department");
-    printTable(rows);
+    console.table(rows);
   }
 
   if (answer === mainMenuOptions.viewEmps) {
@@ -67,7 +68,7 @@ const mainMenuHandler = async (answer, db) => {
       .query(
         "SELECT e.id, e.first_name, e.last_name, role.title, department.name, role.salary, CONCAT(m.first_name, ' ', m.last_name) as manager FROM employee e LEFT JOIN employee m ON e.manager_id = m.id JOIN role on role.id = e.role_id JOIN department on department.id = role.department_id;"
       );
-    printTable(rows);
+    console.table(rows);
   }
 
   if (answer === mainMenuOptions.addDep) {
