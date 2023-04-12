@@ -4,6 +4,10 @@
 
 A CLI app used to keep track of Employees, Roles, and Departments. Review and modify data stored on a database.
 
+
+https://user-images.githubusercontent.com/4216705/231562638-362a1909-dd77-4b6e-ab2e-9b8152b2a225.mov
+
+
 ## Table of Contents
 
 - [Installation](#installation)
